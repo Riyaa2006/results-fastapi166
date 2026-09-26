@@ -1,107 +1,85 @@
 <!DOCTYPE html>
+
 <html>
 
-
 <head>
+
     <title>Student Result Search</title>
 
-
     <style>
- 
 
+        body {
+            font-family: "Times New Roman";
+        }
 
-body{
-    font-family: Times New Roman;
-}
+        h1 {
+            text-align: left;
+        }
 
+        input {
+            border: 1px solid black;
+        }
 
-h1{
-    text-align:left;
-}
+        button {
+            border: 1px solid black;
+        }
 
+        table {
+            border-collapse: collapse;
+        }
 
-input{
-    border:1px solid black;
-}
+        th, td {
+            border: 1px solid black;
+            padding: 3px;
+        }
 
+        .not-found {
+            color: red;
+        }
 
-button{
-    border:1px solid black;
-}
-
-
-table{
-    border-collapse:collapse;
-}
-
-
-th,td{
-    border:1px solid black;
-    padding:3px;
-}
-
-
-.not-found{
-    color:red;
-}
-
-
-
-
-       
     </style>
-</head>
 
+</head>
 
 <body>
 
-
     <div class="container">
-
 
         <h1>🎓 Student Result Portal</h1>
 
-
         <div class="search-box">
+
             <input
                 type="text"
                 id="register_number"
                 placeholder="Enter Register Number">
 
-
             <button onclick="searchResult()">
                 Search Result
             </button>
-        </div>
 
+        </div>
 
         <div id="result"></div>
 
-
     </div>
-
 
     <script>
 
-
         async function searchResult() {
-
 
             let registerNumber =
                 document.getElementById(
                     "register_number"
                 ).value;
 
-
             let response =
                 await fetch(
                     "https://results-fastapi166-4.onrender.com/results"
                 );
 
-
             let students =
                 await response.json();
-
 
             let student =
                 students.find(
@@ -109,74 +87,68 @@ th,td{
                         student.register_number === registerNumber
                 );
 
-
             if (student) {
 
-
                 let output = `
+
                     <div class="student-card">
 
-
                         <h2>${student.student_name}</h2>
-
 
                         <p>
                             <strong>Register Number:</strong>
                             ${student.register_number}
                         </p>
 
-
                         <p>
                             <strong>Department:</strong>
                             ${student.department}
                         </p>
 
-
                         <table>
-
 
                             <tr>
                                 <th>Subject</th>
                                 <th>Grade</th>
                             </tr>
-                `;
 
+                `;
 
                 student.subjects.forEach(subject => {
 
-
                     output += `
+
                         <tr>
                             <td>${subject.subject_name}</td>
                             <td>${subject.grade}</td>
                         </tr>
+
                     `;
+
                 });
 
-
                 output += `
-                        </table>
-                    </div>
-                `;
 
+                        </table>
+
+                    </div>
+
+                `;
 
                 document.getElementById("result").innerHTML =
                     output;
 
-
             } else {
-
 
                 document.getElementById("result").innerHTML =
                     '<div class="not-found">Student Not Found</div>';
-            }
-        }
 
+            }
+
+        }
 
     </script>
 
-
 </body>
-
 
 </html>
